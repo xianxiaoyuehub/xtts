@@ -388,7 +388,7 @@ class Xtts(BaseTTS):
         gpt_his_cond = []
         for i in audio_paths:
             cond, _, _ = get_prompt_slice(
-                    i, 132300, 66150, 22050, True
+                    i, self.config.max_conditioning_length, self.config.min_conditioning_length, 22050, True
                 )
             gpt_his_cond.append(self.get_gpt_cond_latents(cond, load_sr, length=gpt_cond_len))
         gpt_his_cond = sum(gpt_his_cond)
