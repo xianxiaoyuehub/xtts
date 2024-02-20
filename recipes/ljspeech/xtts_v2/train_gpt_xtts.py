@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+# os.environ["CUDA_VISIBLE_DEVICES"] = ""
 os.environ['TRAINER_TELEMETRY'] = '0'
 
 from trainer import Trainer, TrainerArgs
@@ -159,10 +159,12 @@ def main():
     )
 
     # init the model from config
+    '/workspace/TTS/recipes/ljspeech/xtts_v2/run/training/XTTS_2.0_BL_WenetSpeech-January-20-2024_03+52AM-0000000/checkpoint_390000.pth'
+    checkpoint_path = '/workspace/TTS/recipes/ljspeech/xtts_v2/run/training/XTTS_2.0_BL_WenetSpeech-January-20-2024_03+52AM-0000000/checkpoint_390000.pth'
     model = GPTTrainer.init_from_config(config)
     before = model.state_dict()
-    checkpoint = load_fsspec('/workspace/TTS/recipes/ljspeech/xtts_v2/run/training/GPT_XTTS_v2.0_BLSpeech-December-01-2023_02+12PM-0000000/best_model_291564.pth')
-    model.load_state_dict(checkpoint["model"], strict=False)
+    checkpoint = load_fsspec(checkpoint_path)
+    model.load_state_dict(checkpoint["model"])
     after = model.state_dict()
 
 
@@ -177,7 +179,8 @@ def main():
     # init the trainer and 🚀
     trainer = Trainer(
         TrainerArgs(
-            restore_path=None,  # xtts checkpoint is restored via xtts_checkpoint key so no need of restore it using Trainer restore_path parameter
+            # restore_path='/workspace/TTS/recipes/ljspeech/xtts_v2/run/training/XTTS_2.0_BL_WenetSpeech-January-18-2024_09+34AM-2b26674/checkpoint_60000.pth',  # xtts checkpoint is restored via xtts_checkpoint key so no need of restore it using Trainer restore_path parameter
+            restore_path=None,
             skip_train_epoch=False,
             start_with_eval=START_WITH_EVAL,
             grad_accum_steps=GRAD_ACUMM_STEPS,
